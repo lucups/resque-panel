@@ -1,18 +1,26 @@
 <?php
+/**
+ * server.php
+ *
+ */
+define('APP_PATH', __DIR__ . '/../');
 
-$server = new swoole_websocket_server("0.0.0.0", 9501);
+$autoload = require __DIR__ . '/../vendor/autoload.php';
+$autoload->add('', APP_PATH . 'src/');
 
-$server->on('open', function (swoole_websocket_server $server, $request) {
-    echo "server: handshake success with fd{$request->fd}\n";
+$server     = new \swoole_websocket_server('0.0.0.0', 11011);
+$dispatcher = new \ResquePanel\Dispatcher();
+
+$server->on('Open', function ($server, $req) {
+    echo "connection open: " . $req->fd;
 });
 
-$server->on('message', function (swoole_websocket_server $server, $frame) {
-    echo "receive from {$frame->fd}:{$frame->data},opcode:{$frame->opcode},fin:{$frame->finish}\n";
-    $server->push($frame->fd, "this is server");
+$server->on('Message', function ($server, $frame) use ($dispatcher) {
+    $dispatcher->setServer($server)->setFrame($frame)->handle();
 });
 
-$server->on('close', function ($ser, $fd) {
-    echo "client {$fd} closed\n";
+$server->on('Close', function ($server, $fd) {
+    echo "connection close: " . $fd;
 });
 
 $server->start();
