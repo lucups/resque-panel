@@ -63,7 +63,7 @@ class Dispatcher
         if (class_exists($srv_name)) {
             return new $srv_name($this->server, $this->frame);
         } else {
-            throw new \Exception('Service not exists!');
+            throw new \Exception('Service is not exists!' . "[Service Name: $srv_name]");
         }
     }
 
@@ -72,13 +72,17 @@ class Dispatcher
      */
     public function handle()
     {
-        $hello = new HelloService();
-        $this->server->push($this->frame->fd, $hello->say('Tony'));
+//        $hello = new HelloService();
+//        $this->server->push($this->frame->fd, $hello->say('Tony'));
         $data = json_decode($this->frame->data, true);
+
+        error_log(print_r($data, true));
 
         $srv = $this->getService($data['srv']);
         if (method_exists($srv, $data['mtd'])) {
             $srv->$data['mtd']();
+        } else {
+            throw new \Exception('Method is not exists!');
         }
     }
 }

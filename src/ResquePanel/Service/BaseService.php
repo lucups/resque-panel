@@ -36,13 +36,15 @@ class BaseService
 
     /**
      * @param $code
+     * @param $action
      * @param $data
      */
-    public function push($code, $data)
+    public function push($code, $action, $data)
     {
         $resp = [
-            'code' => $code,
-            'data' => $data,
+            'code'   => $code,
+            'action' => $action,
+            'data'   => $data,
         ];
         $this->getServer()->push($this->getFrame()->fd, json_encode($resp));
     }

@@ -13,7 +13,7 @@ $config = require APP_PATH . 'config/config.php';
 $server     = new \swoole_websocket_server('0.0.0.0', 11011);
 $dispatcher = new \ResquePanel\Dispatcher();
 
-$server->on('Open', function ($server, $req) {
+$server->on('Open', function ($server, $req) use ($dispatcher, $config) {
     echo "connection open: " . $req->fd;
 });
 

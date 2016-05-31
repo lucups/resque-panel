@@ -40,4 +40,27 @@ class QueueService extends BaseService
     {
         return $this->getRedis()->sMembers('resque:queues');
     }
+
+    public function status()
+    {
+        while (true) {
+            $data = [
+                [
+                    'label'  => 'v3',
+                    'values' => [
+                        ['time' => strtotime('now'), 'y' => rand(50, 100)],
+                    ],
+                ],
+                [
+
+                    'label'  => 'v2',
+                    'values' => [
+                        ['time' => strtotime('now'), 'y' => rand(10, 50)],
+                    ],
+                ]
+            ];
+            $this->push(0, 'queues_status', $data);
+            sleep(1);
+        }
+    }
 }
