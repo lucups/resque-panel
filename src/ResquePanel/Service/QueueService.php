@@ -9,24 +9,34 @@
 
 namespace ResquePanel\Service;
 
+use ResquePanel\Util\Config;
+
 /**
  * Class QueueService
  * @package ResquePanel\Service
  */
-class QueueService
+class QueueService extends BaseService
 {
     private $redis = null;
 
+    /**
+     * @return null|\Redis
+     * @throws \Exception
+     */
     public function getRedis()
     {
         if (empty($this->redis)) {
+            $redis_conf  = Config::get('redis');
             $this->redis = new \Redis();
-            $this->redis->connect('127.0.0.1', 6379);
+            $this->redis->connect($redis_conf['host'], $redis_conf['port']);
         }
         return $this->redis;
     }
 
-    public function queueNames()
+    /**
+     * @return array
+     */
+    public function getNames()
     {
         return $this->getRedis()->sMembers('resque:queues');
     }

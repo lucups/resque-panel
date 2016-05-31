@@ -19,6 +19,7 @@ class Dispatcher
 {
     private $server = null;
     private $frame  = null;
+    private $config = null;
 
     /**
      * @param $server
@@ -41,25 +42,43 @@ class Dispatcher
     }
 
     /**
+     * @param $config
+     * @return $this
+     */
+    public function setConfig($config)
+    {
+        $this->config = $config;
+        return $this;
+    }
+
+    /**
+     * TODO: A container maybe needed.
+     * @param $srv_name
+     * @return mixed
+     * @throws \Exception
+     */
+    public function getService($srv_name)
+    {
+        $srv_name = '\\ResquePanel\\Service\\' . ucfirst($srv_name) . 'Service';
+        if (class_exists($srv_name)) {
+            return new $srv_name($this->server, $this->frame);
+        } else {
+            throw new \Exception('Service not exists!');
+        }
+    }
+
+    /**
      * handle
      */
     public function handle()
     {
         $hello = new HelloService();
         $this->server->push($this->frame->fd, $hello->say('Tony'));
-        $data   = json_decode($this->frame->data, true);
-        $action = explode('.', $data['action']);
-        
+        $data = json_decode($this->frame->data, true);
 
-//        $data = json_decode($frame->data, true);
-//        if (empty($data['action'])) {
-//            $server->push($frame->fd, json_encode(['code' => 1, 'message' => 'Hello Client! Action name needed!']));
-//        } elseif (method_exists($dispatcher, $data['action'])) {
-//            $result = $dispatcher->$data['action']($data);
-//            $server->push($frame->fd, json_encode($result));
-//        } else {
-//            $server->push($frame->fd, json_encode(['code' => 1, 'message' => "action {$data['action']} is not exists"]));
-//        }
-        // return $this;
+        $srv = $this->getService($data['srv']);
+        if (method_exists($srv, $data['mtd'])) {
+            $srv->$data['mtd']();
+        }
     }
 }
