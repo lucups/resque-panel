@@ -9,43 +9,27 @@
 
 namespace ResquePanel\Service;
 
+use ResquePanel\Util\Config;
+
 /**
  * Class BaseService
  * @package ResquePanel\Service
  */
 class BaseService
 {
-    private $server = null;
-    private $frame  = null;
-
-    public function __construct($server, $frame)
-    {
-        $this->server = $server;
-        $this->frame  = $frame;
-    }
-
-    public function getServer()
-    {
-        return $this->server;
-    }
-
-    public function getFrame()
-    {
-        return $this->frame;
-    }
+    private $redis = null;
 
     /**
-     * @param $code
-     * @param $action
-     * @param $data
+     * @return null|\Redis
+     * @throws \Exception
      */
-    public function push($code, $action, $data)
+    public function getRedis()
     {
-        $resp = [
-            'code'   => $code,
-            'action' => $action,
-            'data'   => $data,
-        ];
-        $this->getServer()->push($this->getFrame()->fd, json_encode($resp));
+        if (empty($this->redis)) {
+            $redis_conf  = Config::get('redis');
+            $this->redis = new \Redis();
+            $this->redis->connect($redis_conf['host'], $redis_conf['port']);
+        }
+        return $this->redis;
     }
 }

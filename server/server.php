@@ -10,13 +10,14 @@ $autoload->add('', APP_PATH . 'src/');
 
 $config = require APP_PATH . 'config/config.php';
 
-//  fork 一个子进程记录 system 和 queue 的状态数据
+// fork a child process to record queue status data
 $child_logger = new \swoole_process(function () use ($config) {
     $logger = new \Monolog\Logger('Queue Monitor');
     $logger->pushHandler(new \Monolog\Handler\StreamHandler('/tmp/queue_monitor.log', \Monolog\Logger::INFO));
     while (true) {
-        $logger->info('Hello ' . strtotime('now'));
-        sleep(1);
+        (new \ResquePanel\Service\CollectorService())->persistCurrentMinuteStatus();
+        $logger->info('Hello ' . strtotime('now')); // todo remove
+        sleep(60);
     }
 });
 

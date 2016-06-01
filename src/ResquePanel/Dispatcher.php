@@ -9,8 +9,6 @@
 
 namespace ResquePanel;
 
-use ResquePanel\Service\HelloService;
-
 /**
  * Class Dispatcher
  * @package ResquePanel
@@ -69,13 +67,20 @@ class Dispatcher
 
     /**
      * handle
+     *      The default service is ResponseService.
      */
     public function handle()
     {
         $data = json_decode($this->frame->data, true);
-        $srv  = $this->getService($data['srv']);
+        if (empty($data['srv'])) {
+            $data['srv'] = 'Response';
+        }
+        $srv = $this->getService($data['srv']);
         if (method_exists($srv, $data['mtd'])) {
-            $srv->$data['mtd']();
+            if (empty($data['params'])) {
+                $params = null;
+            }
+            $srv->$data['mtd']($params);
         } else {
             throw new \Exception('Method is not exists!');
         }
