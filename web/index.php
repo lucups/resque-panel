@@ -25,7 +25,7 @@
     </div>
     <div id="navbar" class="collapse navbar-collapse pull-right">
         <ul class="nav navbar-nav">
-            <li><a href="javascript:void(0)" class="" id="btn-config">Configuration</a></li>
+            <!--<li><a href="javascript:void(0)" class="" id="btn-config">Configuration</a></li>-->
             <!--<li class="active"><a href="javascript:void(0)" class="btn-lang" data-lang="en">English</a></li>-->
             <!--<li><a href="javascript:void(0)" class="btn-lang" data-lang="cn">Simple Chinese</a></li>-->
         </ul>

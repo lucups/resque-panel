@@ -1,6 +1,10 @@
-# resque-panel
+resque-panel
+============
+
+[![Build Status](https://travis-ci.org/Lucups/resque-panel.svg?branch=master)](https://travis-ci.org/Lucups/resque-panel)
 
 A monitoring tool that contains a web interface for php-resque.
+
 
 - [中文说明](README_CN.md)
 
@@ -10,7 +14,6 @@ A monitoring tool that contains a web interface for php-resque.
 
 ```
 # 1. Clone code from GitHub
-
 git clone https://github.com/Lucups/resque-panel.git
 cd resque-panel/
 
