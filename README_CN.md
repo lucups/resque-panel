@@ -31,12 +31,12 @@ php -S localhost:8080 -t web/
 http://localhost:8080
 ```
 
-### ScreenShots
+### 截图
 
 ![All](screenshots/ResquePanel-ScreenShot03.gif)
 ![Failed Job Detail](screenshots/ResquePanel-ScreenShot02.gif)
 
-### Based Projects List
+### 主要依赖的项目
 
 - [Swoole](#)
 - [ECharts](#)
@@ -44,7 +44,7 @@ http://localhost:8080
 - [Bootstrap](#)
 - [Juicer](#)
 
-### TODO List
+### TODO 列表
 
 - More configuration parameters;
 - Refactor service layer;
