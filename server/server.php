@@ -6,7 +6,6 @@
 define('APP_PATH', __DIR__ . '/../');
 
 $autoload = require __DIR__ . '/../vendor/autoload.php';
-$autoload->add('', APP_PATH . 'src/');
 
 $config = require APP_PATH . 'config/config.php';
 \ResquePanel\Util\Config::setConfig($config);
