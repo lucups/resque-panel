@@ -28,7 +28,7 @@ php -S localhost:4000 -t web/
 
 ### ScreenShots
 
-![All](screenshots/ResquePanel-ScreenShot01.gif)
+![All](screenshots/ResquePanel-ScreenShot03.gif)
 ![Failed Job Detail](screenshots/ResquePanel-ScreenShot02.gif)
 
 ### Based Projects List
