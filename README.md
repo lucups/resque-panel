@@ -8,8 +8,6 @@ A monitoring tool that contains a web interface for php-resque.
 
 - [中文说明](README_CN.md)
 
-### ScreenShots
-
 ### Install & Configuration
 
 ```
@@ -27,6 +25,11 @@ nohup php server/server.php > /tmp/server.log &
 # 4. Start PHP web server (you can also use other web server, just like Nginx or Apache)
 php -S localhost:4000 -t web/
 ```
+
+### ScreenShots
+
+![All](screenshots/ResquePanel-ScreenShot01.gif)
+![Failed Job Detail](screenshots/ResquePanel-ScreenShot02.gif)
 
 ### Based Projects List
 
