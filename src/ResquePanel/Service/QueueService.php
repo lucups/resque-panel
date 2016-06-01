@@ -45,22 +45,11 @@ class QueueService extends BaseService
     {
         while (true) {
             $data = [
-                [
-                    'label'  => 'v3',
-                    'values' => [
-                        ['time' => strtotime('now'), 'y' => rand(50, 100)],
-                    ],
-                ],
-                [
-
-                    'label'  => 'v2',
-                    'values' => [
-                        ['time' => strtotime('now'), 'y' => rand(10, 50)],
-                    ],
-                ]
+                'time' => strtotime('now'),
+                'val'  => rand(50, 100),
             ];
             $this->push(0, 'queues_status', $data);
-            sleep(1);
+            sleep(2);
         }
     }
 }

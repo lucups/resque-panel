@@ -5,7 +5,6 @@
     <title>ResquePanel</title>
     <link rel="stylesheet" href="/libs/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="/libs/loader.min.css" type="text/css">
-    <link rel="stylesheet" href="/libs/epoch/css/epoch.min.css">
     <link rel="stylesheet" href="/assets/css/dashboard.css">
     <style>
         .line-scale > div {
@@ -227,16 +226,52 @@
 <script src="/libs/bootstrap/js/bootstrap.min.js"></script>
 <script src="/libs/loader.js" type="text/javascript"></script>
 <script src="/libs/juicer/juicer-min.js" type="text/javascript"></script>
-<script src="/libs/d3.v3.min.js" charset="utf-8"></script>
-<script src="/libs/epoch/js/epoch.min.js"></script>
-<!--<script src="/libs/echarts.min.js"></script>-->
+<script src="/libs/echarts.min.js"></script>
 
 <script>
     var storage = window.localStorage;
     var schools = [];
     var line_index = 1;
-    var queues_status;
     var logger = $('#logger');
+
+    // 基于准备好的dom，初始化echarts实例
+    var queues_status = echarts.init(document.getElementById('queues-status'));
+    var date = [Date.parse(new Date())];
+    var data = [0];
+
+    queues_status.setOption({
+        xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            data: date
+        },
+        yAxis: {
+            boundaryGap: [0, '50%'],
+            type: 'value'
+        },
+        series: [
+            {
+                name: '成交',
+                type: 'line',
+                smooth: true,
+                symbol: 'none',
+                stack: 'a',
+                areaStyle: {
+                    normal: {}
+                },
+                data: data
+            }
+        ]
+    });
+
+    function update_data(resp_data, limit) {
+        date.push(resp_data.time);
+        data.push(resp_data.val);
+        if (limit && date.length > limit) {
+            date.shift();
+            data.shift();
+        }
+    }
 
     function log(text) {
         logger.append('<span class="line">' + line_index + '</span> ' + text + '<br>');
@@ -261,12 +296,16 @@
                 switch (resp.action) {
                     case 'queues_status':
                         console.info(resp.data);
-
-                        if (queues_status == undefined) {
-                            queues_status = $('#queues-status').epoch({type: 'time.area', data: resp.data});
-                        } else {
-                            queues_status.push(resp.data);
-                        }
+                        update_data(resp.data, 20);
+                        queues_status.setOption({
+                            xAxis: {
+                                data: date
+                            },
+                            series: [{
+                                name: '成交',
+                                data: data
+                            }]
+                        });
                         break;
                     case 'output':
                         break;

@@ -72,13 +72,8 @@ class Dispatcher
      */
     public function handle()
     {
-//        $hello = new HelloService();
-//        $this->server->push($this->frame->fd, $hello->say('Tony'));
         $data = json_decode($this->frame->data, true);
-
-        error_log(print_r($data, true));
-
-        $srv = $this->getService($data['srv']);
+        $srv  = $this->getService($data['srv']);
         if (method_exists($srv, $data['mtd'])) {
             $srv->$data['mtd']();
         } else {

@@ -10,6 +10,18 @@ $autoload->add('', APP_PATH . 'src/');
 
 $config = require APP_PATH . 'config/config.php';
 
+//  fork 一个子进程记录 system 和 queue 的状态数据
+$child_logger = new \swoole_process(function () use ($config) {
+    $logger = new \Monolog\Logger('Queue Monitor');
+    $logger->pushHandler(new \Monolog\Handler\StreamHandler('/tmp/queue_monitor.log', \Monolog\Logger::INFO));
+    while (true) {
+        $logger->info('Hello ' . strtotime('now'));
+        sleep(1);
+    }
+});
+
+$child_logger_pid = $child_logger->start();
+
 $server     = new \swoole_websocket_server('0.0.0.0', 11011);
 $dispatcher = new \ResquePanel\Dispatcher();
 
@@ -18,7 +30,10 @@ $server->on('Open', function ($server, $req) use ($dispatcher, $config) {
 });
 
 $server->on('Message', function ($server, $frame) use ($dispatcher, $config) {
-    $dispatcher->setServer($server)->setFrame($frame)->setConfig($config)->handle();
+    try {
+        $dispatcher->setServer($server)->setFrame($frame)->setConfig($config)->handle();
+    } catch (\Exception $e) {
+    }
 });
 
 $server->on('Close', function ($server, $fd) {
