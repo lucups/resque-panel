@@ -1,3 +1,7 @@
+/**
+ * ws.js
+ */
+
 var line_index = 1;
 var cs = $('#console');
 
@@ -40,7 +44,7 @@ function update_data(resp_data, limit) {
     }
 }
 
-var socket = new WebSocket('ws://192.168.33.10:11011');
+var socket = new WebSocket(WS_URL);
 socket.onopen = function (event) {
     // server_status('已连接');
     log('Connected.');
@@ -69,6 +73,9 @@ socket.onopen = function (event) {
                             data: data
                         }]
                     });
+                    break;
+                case 'failed_jobs':
+                    $('#list-failed-jobs').html(juicer($('#tpl-failed-jobs').html(), resp.data));
                     break;
                 case 'output':
                     break;

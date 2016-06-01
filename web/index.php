@@ -6,28 +6,10 @@
     <link rel="stylesheet" href="/libs/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="/libs/loader.min.css" type="text/css">
     <link rel="stylesheet" href="/assets/css/dashboard.css">
-    <style>
-        .line-scale > div {
-            /*background: #39A69A;*/
-            background: #3A7BBA;
-        }
-
-        #console {
-            padding: 5px;
-            width: 100%;
-            height: 200px;
-            color: whitesmoke;
-            background: black;
-            overflow-y: scroll;
-            font-size: 10px;
-        }
-
-        .line {
-            color: yellowgreen;
-            display: inline-block;
-            width: 32px;
-        }
-    </style>
+    <?php
+    define('APP_PATH', __DIR__ . '/../');
+    $config = require APP_PATH . 'config/config.php';
+    ?>
 </head>
 <body>
 <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -80,22 +62,19 @@
                             <label class="sr-only" for="limit">Limit</label>
                             <input type="text" class="form-control" id="limit" placeholder="Limit">
                         </div>
-                        <a href="javascript:void(0)" id="btn-load-failed-jobs" class="btn btn-primary">Load</a>
+                        <a href="javascript:void(0);" id="btn-load-failed-jobs" class="btn btn-primary">Load</a>
                     </form>
 
                     <table class="table table-bordered" style="margin-top: 1em;">
+                        <thead>
                         <tr>
-                            <td>A</td>
+                            <th>failed_at/queue/worker</th>
+                            <th>exception</th>
+                            <th>error</th>
                         </tr>
-                        <tr>
-                            <td>A</td>
-                        </tr>
-                        <tr>
-                            <td>A</td>
-                        </tr>
-                        <tr>
-                            <td>A</td>
-                        </tr>
+                        </thead>
+                        <tbody id="list-failed-jobs">
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -168,27 +147,18 @@
     </div>
 </script>
 
-<script id="tpl-table" type="text/template">
-    <h4>Failed Job List</h4>
-    <table class="table table-bordered table-hover">
-        <thead>
-        <tr>
-            <th>failed_at/queue/worker</th>
-            <th>exception</th>
-            <th>error</th>
-        </tr>
-        </thead>
-        <tbody id="failed-jobs-table-list">
-        {@each failed_jobs as job}
-        <tr>
-            <td>${job.failed_at}/${job.queue}/${job.worker}</td>
-            <td>${job.exception}</td>
-            <td>${job.error}</td>
-        </tr>
-        {@/each}
-        </tbody>
-    </table>
-    <button class="btn btn-success btn-md" id="btn-loadmore">加载更多</button>
+<script id="tpl-failed-jobs" type="text/template">
+    {@each failed_jobs as job}
+    <tr>
+        <td>${job.failed_at}/${job.queue}/${job.worker}</td>
+        <td>${job.exception}</td>
+        <td>${job.error}</td>
+    </tr>
+    {@/each}
+</script>
+
+<script>
+    var WS_URL = 'ws://<?php echo $config['ws']['host']; ?>:<?php echo $config['ws']['port']; ?>';
 </script>
 
 <script src="/libs/jquery/jquery-1.11.3.min.js"></script>
@@ -201,7 +171,6 @@
 
 <script>
     var storage = window.localStorage;
-
     function log(text) {
         cs.append('<span class="line">' + line_index + '</span> ' + text + '<br>');
         cs.scrollTop(cs[0].scrollHeight);
@@ -217,7 +186,12 @@
     });
 
     $('#btn-load-failed-jobs').click(function () {
-
+        console.info('btn-load-failed-jobs clicked!');
+        socket.send(JSON.stringify({
+            mtd: 'failedJobs',
+            offset: $('#offset').val(),
+            limit: $('#limit').val()
+        }));
     });
 </script>
 </body>

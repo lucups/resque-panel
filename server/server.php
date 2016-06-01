@@ -28,7 +28,7 @@ try {
 
 
     // init server
-    $server     = new \swoole_websocket_server('0.0.0.0', 11011);
+    $server     = new \swoole_websocket_server($config['ws']['host'], $config['ws']['port']);
     $dispatcher = new \ResquePanel\Dispatcher();
 
     $server->on('Open', function ($server, $req) use ($dispatcher, $config) {

@@ -58,6 +58,23 @@ class ResponseService extends BaseService
         return $this->getRedis()->sMembers('resque:queues');
     }
 
+    public function failedJobs($params = null)
+    {
+        $offset = 0;
+        $limit  = 10;
+        if (!empty($params['offset'])) {
+            $offset = (int)$params['offset'];
+        }
+        if (!empty($params['limit'])) {
+            $limit = (int)$params['limit'];
+        }
+        $failed_jobs = $this->getRedis()->lRange('resque:failed', $offset, $offset + $limit);
+        foreach ($failed_jobs as &$failed_job) {
+            $failed_job = json_decode($failed_job, true);
+        }
+        $this->push(0, 'failed_jobs', $failed_jobs);
+    }
+
     /**
      * Return the data by timestamp (default is now).
      * @param null $params

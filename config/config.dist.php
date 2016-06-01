@@ -9,6 +9,10 @@
 
 return [
     'debug' => true,
+    'ws'    => [
+        'host' => 'localhost',
+        'port' => 11011,
+    ],
     'redis' => [
         'host' => 'localhost',
         'port' => 6379,

@@ -1,3 +1,7 @@
+/**
+ * utils.js
+ */
+
 Date.prototype.Format = function (formatStr) {
     var str = formatStr;
     // var Week = ['日', '一', '二', '三', '四', '五', '六'];
@@ -32,4 +36,4 @@ Date.prototype.Format = function (formatStr) {
 window.onbeforeunload = function (e) {
     console.info(e);
     // return 'Warning!';
-}
+};
