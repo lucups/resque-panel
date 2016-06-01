@@ -11,19 +11,25 @@ A monitoring tool that contains a web interface for php-resque.
 ### Install & Configuration
 
 ```
-# 1. Clone code from GitHub
+# 0. Make sure you have installed swoole and composer
+
+# 1. Clone code from GitHub, and install the libs by composer
 git clone https://github.com/Lucups/resque-panel.git
 cd resque-panel/
+composer install
 
 # 2. Create config file, and edit it
 cp ./config/config.dist.php ./config/config.php
 vim ./config/config.php
 
 # 3. Start WebSocket server by `nohup` command
-nohup php server/server.php > /tmp/server.log &
+nohup php server/resque_panel.php > /tmp/resque_panel.log &
 
 # 4. Start PHP web server (you can also use other web server, just like Nginx or Apache)
 php -S localhost:4000 -t web/
+
+# 5. Open your browser, and visit
+http://localhost:8080
 ```
 
 ### ScreenShots
