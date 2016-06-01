@@ -57,12 +57,10 @@ socket.onopen = function (event) {
 
     socket.onmessage = function (event) {
         log('Client received a message');
-        console.info(event);
         var resp = JSON.parse(event.data);
         if (resp.action) {
             switch (resp.action) {
                 case 'queues_status':
-                    console.info(resp.data);
                     update_data(resp.data, 20);
                     queues_status.setOption({
                         xAxis: {
@@ -75,6 +73,7 @@ socket.onopen = function (event) {
                     });
                     break;
                 case 'failed_jobs':
+                    console.info(resp.data);
                     $('#list-failed-jobs').html(juicer($('#tpl-failed-jobs').html(), resp.data));
                     break;
                 case 'output':

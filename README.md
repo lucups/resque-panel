@@ -17,7 +17,7 @@ A monitoring tool that contains a web interface for php-resque.
 git clone https://github.com/Lucups/resque-panel.git
 cd resque-panel/
 
-# 2. Create config file, and update
+# 2. Create config file, and edit it
 cp ./config/config.dist.php ./config/config.php
 vim ./config/config.php
 

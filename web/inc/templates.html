@@ -1,0 +1,15 @@
+<script id="tpl-resque" type="text/template">
+</script>
+
+<script id="tpl-failed-jobs" type="text/template">
+    {@each failed_jobs as job}
+    <tr>
+        <td>${job.failed_at}<br>${job.worker}</td>
+        <td>${job.exception}</td>
+        <td>${job.error}</td>
+        <td>
+            <button class="btn btn-xs btn-info btn-failed-job-detail" data-raw="${job.raw_data}">Detail</button>
+        </td>
+    </tr>
+    {@/each}
+</script>

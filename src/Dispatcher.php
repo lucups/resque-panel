@@ -78,9 +78,9 @@ class Dispatcher
         $srv = $this->getService($data['srv']);
         if (method_exists($srv, $data['mtd'])) {
             if (empty($data['params'])) {
-                $params = null;
+                $data['params'] = null;
             }
-            $srv->$data['mtd']($params);
+            $srv->$data['mtd']($data['params']);
         } else {
             throw new \Exception('Method is not exists!');
         }

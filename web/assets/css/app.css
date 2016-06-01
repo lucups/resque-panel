@@ -22,3 +22,7 @@ body {
     display: inline-block;
     width: 32px;
 }
+
+footer {
+    padding-bottom: 1.5em;
+}

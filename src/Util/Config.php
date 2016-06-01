@@ -28,6 +28,7 @@ class Config
      */
     public static function get($key)
     {
+        // TODO check the required items.
         if (empty(self::$config)) {
             throw new \Exception('Config is null!');
         }

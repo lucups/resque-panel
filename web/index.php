@@ -5,7 +5,8 @@
     <title>ResquePanel</title>
     <link rel="stylesheet" href="/libs/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="/libs/loader.min.css" type="text/css">
-    <link rel="stylesheet" href="/assets/css/dashboard.css">
+    <link href="libs/jsoneditor/jsoneditor.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/assets/css/app.css">
     <?php
     define('APP_PATH', __DIR__ . '/../');
     $config = require APP_PATH . 'config/config.php';
@@ -68,9 +69,10 @@
                     <table class="table table-bordered" style="margin-top: 1em;">
                         <thead>
                         <tr>
-                            <th>failed_at/queue/worker</th>
-                            <th>exception</th>
-                            <th>error</th>
+                            <th>FailedAt/Worker</th>
+                            <th>Exception</th>
+                            <th>Error</th>
+                            <th>Operation</th>
                         </tr>
                         </thead>
                         <tbody id="list-failed-jobs">
@@ -92,72 +94,13 @@
         </div>
     </div>
 
-    <footer class="footer">
-        <p>
-            Powered by <a href="http://tony.engineer" target="_blank">Lucups</a>,
-            fork me on <a href="https://github.com/Lucups/resque-panel" target="_blank">Github</a>.
-        </p>
-    </footer>
+    <?php include __DIR__ . '/inc/footer.html'; ?>
 </div>
 
-<div id="modal-about" class="modal fade">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">About</h4>
-            </div>
-            <div class="modal-body">
-                <p>Author: Tony Lu</p>
-                <p>Email: <a href="mailto:dev@tony.engineer">dev@tony.engineer</a></p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal">Done</button>
-            </div>
-        </div>
-    </div>
-</div>
+<?php include __DIR__ . '/inc/modals.html'; ?>
+<?php include __DIR__ . '/inc/templates.html'; ?>
 
-<div id="modal-config" class="modal fade">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Configuration</h4>
-            </div>
-            <div class="modal-body">
-                <p>Redis Config</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary">Done</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script id="tpl-resque" type="text/template">
-    <div class="row">
-        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-            <div id="chart-status"></div>
-        </div>
-        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-            <div id="chart-statics"></div>
-        </div>
-    </div>
-</script>
-
-<script id="tpl-failed-jobs" type="text/template">
-    {@each failed_jobs as job}
-    <tr>
-        <td>${job.failed_at}/${job.queue}/${job.worker}</td>
-        <td>${job.exception}</td>
-        <td>${job.error}</td>
-    </tr>
-    {@/each}
-</script>
-
-<script>
+<script type="text/javascript">
     var WS_URL = 'ws://<?php echo $config['ws']['host']; ?>:<?php echo $config['ws']['port']; ?>';
 </script>
 
@@ -166,11 +109,14 @@
 <script src="/libs/loader.js" type="text/javascript"></script>
 <script src="/libs/juicer-min.js" type="text/javascript"></script>
 <script src="/libs/echarts.min.js"></script>
+<script src="/libs/jsoneditor/jsoneditor.min.js"></script>
 <script src="/assets/js/utils.js"></script>
 <script src="/assets/js/ws.js"></script>
 
-<script>
-    var storage = window.localStorage;
+<script type="text/javascript">
+    // TODO storage, enhanced user experience
+    // var storage = window.localStorage;
+
     function log(text) {
         cs.append('<span class="line">' + line_index + '</span> ' + text + '<br>');
         cs.scrollTop(cs[0].scrollHeight);
@@ -186,12 +132,31 @@
     });
 
     $('#btn-load-failed-jobs').click(function () {
-        console.info('btn-load-failed-jobs clicked!');
+        var offset = $('#offset').val();
+        var limit = $('#limit').val();
         socket.send(JSON.stringify({
             mtd: 'failedJobs',
-            offset: $('#offset').val(),
-            limit: $('#limit').val()
+            params: {
+                offset: offset,
+                limit: limit
+            }
         }));
+    });
+
+    // create the editor
+    var container = document.getElementById("jsoneditor");
+    var options = {
+        mode: 'view',
+    };
+    var editor = new JSONEditor(container, options);
+
+
+    $(document).delegate('.btn-failed-job-detail', 'click', function () {
+        var raw_data = $(this).data('raw');
+        console.info(raw_data);
+        // set json
+        editor.set(raw_data);
+        $('#modal-failed-job-detail').modal('show');
     });
 </script>
 </body>

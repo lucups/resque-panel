@@ -68,11 +68,14 @@ class ResponseService extends BaseService
         if (!empty($params['limit'])) {
             $limit = (int)$params['limit'];
         }
-        $failed_jobs = $this->getRedis()->lRange('resque:failed', $offset, $offset + $limit);
-        foreach ($failed_jobs as &$failed_job) {
-            $failed_job = json_decode($failed_job, true);
+        $failed_jobs         = $this->getRedis()->lRange('resque:failed', $offset, $offset + $limit - 1);
+        $decoded_failed_jobs = [];
+        foreach ($failed_jobs as $failed_job) {
+            $decoded_failed_job             = json_decode($failed_job, true);
+            $decoded_failed_job['raw_data'] = $failed_job;
+            $decoded_failed_jobs[]          = $decoded_failed_job;
         }
-        $this->push(0, 'failed_jobs', $failed_jobs);
+        $this->push(0, 'failed_jobs', ['failed_jobs' => $decoded_failed_jobs]);
     }
 
     /**
