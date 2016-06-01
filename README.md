@@ -1,4 +1,4 @@
-resque-panel
+ResquePanel
 ============
 
 [![Build Status](https://travis-ci.org/Lucups/resque-panel.svg?branch=master)](https://travis-ci.org/Lucups/resque-panel)

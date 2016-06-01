@@ -1,4 +1,5 @@
-# resque-panel
+ResquePanel
+===========
 
 A monitoring tool that contains a web interface for php-resque.
 
