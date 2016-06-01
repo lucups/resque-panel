@@ -17,3 +17,9 @@ A monitoring tool that contains a web interface for php-resque.
 - [jQuery](#)
 - [Bootstrap](#)
 - [Juicer](#)
+
+### TODO List
+
+- More configuration parameters;
+- Refactor service layer;
+- Authentication;

@@ -28,7 +28,7 @@ class Config
      */
     public static function get($key)
     {
-        if (empty($config)) {
+        if (empty(self::$config)) {
             throw new \Exception('Config is null!');
         }
         return self::$config[$key];

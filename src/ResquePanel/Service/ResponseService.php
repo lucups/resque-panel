@@ -64,9 +64,10 @@ class ResponseService extends BaseService
      */
     public function status($params = null)
     {
-        $data = [
-            'time' => strtotime('now'),
-            'val'  => rand(50, 100),
+        $redis = $this->getRedis();
+        $data  = [
+            'time' => date('Y-m-d H:i:s'),
+            'val'  => $redis->lLen('resque:queue:v3') + rand(1, 10),
         ];
         $this->push(0, 'queues_status', $data);
     }

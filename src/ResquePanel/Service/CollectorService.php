@@ -39,7 +39,8 @@ class CollectorService extends BaseService
         $queue_names = $redis->sMembers('resque:queues');
         foreach ($queue_names as $queue_name) {
             $queues[] = [
-                'name' => $queue_name,
+                'name'   => $queue_name,
+                'length' => $redis->lLen('resque:queue:' . $queue_name),
             ];
         }
 
