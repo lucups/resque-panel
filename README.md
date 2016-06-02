@@ -47,6 +47,7 @@ http://localhost:8080
 
 ### TODO List
 
+- Failed Job List: sort by FailedAt
 - More configuration parameters;
 - Refactor service layer;
 - Authentication;

@@ -43,9 +43,3 @@ http://localhost:8080
 - [jQuery](#)
 - [Bootstrap](#)
 - [Juicer](#)
-
-### TODO 列表
-
-- More configuration parameters;
-- Refactor service layer;
-- Authentication;
