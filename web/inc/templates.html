@@ -1,6 +1,21 @@
 <script id="tpl-resque" type="text/template">
 </script>
 
+<script id="tpl-queues-statistics" type="text/template">
+    <ul>
+        <li>Processed Jobs: <span class="label label-primary">${processed_jobs}</span></li>
+        <li>Failed Jobs: <span class="label label-danger">${failed_jobs}</span></li>
+    </ul>
+</script>
+
+
+<script id="tpl-job-statistics" type="text/template">
+    <ul>
+        <li>Processed Jobs: <span class="label label-primary">${processed_jobs}</span></li>
+        <li>Failed Jobs: <span class="label label-danger">${failed_jobs}</span></li>
+    </ul>
+</script>
+
 <script id="tpl-failed-jobs" type="text/template">
     {@each failed_jobs as job}
     <tr>

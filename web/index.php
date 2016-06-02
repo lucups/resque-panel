@@ -26,6 +26,11 @@
     </div>
     <div id="navbar" class="collapse navbar-collapse pull-right">
         <ul class="nav navbar-nav">
+            <li>
+                <a href="javascript:void(0)">
+                    <span id="btn-ws-status" class="glyphicon glyphicon-record"></span>
+                </a>
+            </li>
             <!--<li><a href="javascript:void(0)" class="" id="btn-config">Configuration</a></li>-->
             <!--<li class="active"><a href="javascript:void(0)" class="btn-lang" data-lang="en">English</a></li>-->
             <!--<li><a href="javascript:void(0)" class="btn-lang" data-lang="cn">Simple Chinese</a></li>-->
@@ -35,6 +40,26 @@
 
 <div class="container">
     <div class="row">
+
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Job Statistics</h3>
+                </div>
+                <div class="panel-body" id="job-statistics">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Queues Status</h3>
+                </div>
+                <div class="panel-body" id="queues-statistics">
+                </div>
+            </div>
+        </div>
 
         <div class="col-md-12">
             <div class="panel panel-default">
@@ -47,7 +72,6 @@
             </div>
         </div>
 
-
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -55,6 +79,13 @@
                 </div>
                 <div class="panel-body">
                     <form class="form-inline">
+                        <div class="form-group">
+                            <label class="sr-only" for="offset">Sort</label>
+                            <select name="sort" id="sort" class="form-control">
+                                <option value="2">Sort by Time DESC</option>
+                                <option value="1">Sort by Time ASC</option>
+                            </select>
+                        </div>
                         <div class="form-group">
                             <label class="sr-only" for="offset">Offset</label>
                             <input type="text" class="form-control" id="offset" placeholder="Offset">
@@ -88,6 +119,7 @@
                     <h3 class="panel-title">Console</h3>
                 </div>
                 <div class="panel-body">
+                    <button class="btn btn-xs btn-default">Clear</button>
                     <div id="console"></div>
                 </div>
             </div>
@@ -134,11 +166,13 @@
     $('#btn-load-failed-jobs').click(function () {
         var offset = $('#offset').val();
         var limit = $('#limit').val();
+        var sort = $('#sort').val();
         socket.send(JSON.stringify({
             mtd: 'failedJobs',
             params: {
                 offset: offset,
-                limit: limit
+                limit: limit,
+                sort: sort
             }
         }));
     });
@@ -146,10 +180,9 @@
     // create the editor
     var container = document.getElementById("jsoneditor");
     var options = {
-        mode: 'view',
+        mode: 'view'
     };
     var editor = new JSONEditor(container, options);
-
 
     $(document).delegate('.btn-failed-job-detail', 'click', function () {
         var raw_data = $(this).data('raw');

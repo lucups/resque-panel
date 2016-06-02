@@ -1,9 +1,8 @@
-ResquePanel
-============
+ResquePanel - 一个 php-resque 的Web 界面监控工具。
+==============================================
 
 [![Build Status](https://travis-ci.org/Lucups/resque-panel.svg?branch=master)](https://travis-ci.org/Lucups/resque-panel)
 
-一个有 Web 界面的 php-resque 监控工具。
 
 - [English Version](README.md)
 
@@ -38,8 +37,9 @@ http://localhost:8080
 
 ### 主要依赖的项目
 
-- [Swoole](#)
-- [ECharts](#)
-- [jQuery](#)
-- [Bootstrap](#)
-- [Juicer](#)
+- [Swoole](http://www.swoole.com/)
+- [ECharts](http://echarts.baidu.com/)
+- [jsoneditor](https://github.com/josdejong/jsoneditor)
+- [jQuery](http://jquery.com/)
+- [Bootstrap](https://getbootstrap.com/)
+- [Juicer](http://juicer.name)

@@ -9,7 +9,11 @@
 
 namespace Jobs;
 
+/**
+ * Class RandomJob
+ * @package Jobs
+ */
 class RandomJob
 {
-    
+
 }

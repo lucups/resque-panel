@@ -48,10 +48,18 @@ var socket = new WebSocket(WS_URL);
 socket.onopen = function (event) {
     // server_status('已连接');
     log('Connected.');
+    $('#btn-ws-status').css('color', 'green');
+
+    socket.send(JSON.stringify({
+        mtd: 'jobStatistics'
+    }));
+    socket.send(JSON.stringify({
+        mtd: 'queuesStatistics'
+    }));
 
     setInterval(function () {
         socket.send(JSON.stringify({
-            mtd: 'status'
+            mtd: 'queuesStatus'
         }));
     }, 3000);
 
@@ -60,7 +68,7 @@ socket.onopen = function (event) {
         var resp = JSON.parse(event.data);
         if (resp.action) {
             switch (resp.action) {
-                case 'queues_status':
+                case 'queuesStatus':
                     update_data(resp.data, 20);
                     queues_status.setOption({
                         xAxis: {
@@ -72,7 +80,13 @@ socket.onopen = function (event) {
                         }]
                     });
                     break;
-                case 'failed_jobs':
+                case 'queuesStatistics':
+                    $('#queues-statistics').html(juicer($('#tpl-queues-statistics').html(), resp.data));
+                    break;
+                case 'jobStatistics':
+                    $('#job-statistics').html(juicer($('#tpl-job-statistics').html(), resp.data));
+                    break;
+                case 'failedJobs':
                     console.info(resp.data);
                     $('#list-failed-jobs').html(juicer($('#tpl-failed-jobs').html(), resp.data));
                     break;
@@ -84,10 +98,12 @@ socket.onopen = function (event) {
 
     socket.onabort = function (event) {
         log('Disconnect.');
+        $('#btn-ws-status').css('color', 'darkred');
     };
 
     socket.onclose = function (event) {
         log('Connection is closed!');
+        $('#btn-ws-status').css('color', 'darkred');
     };
     //socket.close()
 };

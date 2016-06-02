@@ -47,7 +47,6 @@ class CollectorService extends BaseService
         $data = [
             'processed_jobs_amount' => $redis->get('resque:stat:processed'),
             'failed_jobs_amount'    => $redis->get('resque:stat:failed'),
-            'pending_jobs_amount'   => 3,
             'queues'                => $queues,
             'workers'               => $workers,
         ];

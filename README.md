@@ -1,10 +1,7 @@
-ResquePanel
-============
+ResquePanel - A simple php-resque web interface monitor.
+============================================================
 
 [![Build Status](https://travis-ci.org/Lucups/resque-panel.svg?branch=master)](https://travis-ci.org/Lucups/resque-panel)
-
-A monitoring tool that contains a web interface for php-resque.
-
 
 - [中文说明](README_CN.md)
 
@@ -37,17 +34,18 @@ http://localhost:8080
 ![All](screenshots/ResquePanel-ScreenShot03.gif)
 ![Failed Job Detail](screenshots/ResquePanel-ScreenShot02.gif)
 
-### Based Projects List
+### Powered by
 
-- [Swoole](#)
-- [ECharts](#)
-- [jQuery](#)
-- [Bootstrap](#)
-- [Juicer](#)
+- [Swoole](http://www.swoole.com/)
+- [ECharts](http://echarts.baidu.com/)
+- [jsoneditor](https://github.com/josdejong/jsoneditor)
+- [jQuery](http://jquery.com/)
+- [Bootstrap](https://getbootstrap.com/)
+- [Juicer](http://juicer.name)
 
 ### TODO List
 
-- Failed Job List: sort by FailedAt
+- Refactor js WebSocket Client, make it robust;
 - More configuration parameters;
 - Refactor service layer;
-- Authentication;
+- Authentication Support;
