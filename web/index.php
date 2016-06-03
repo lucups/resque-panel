@@ -51,9 +51,9 @@
         <div class="col-md-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Queues Status</h3>
+                    <h3 class="panel-title">Workers Statistics</h3>
                 </div>
-                <div class="panel-body" id="queues-statistics">
+                <div class="panel-body" id="workers-statistics">
                 </div>
             </div>
         </div>

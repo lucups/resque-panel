@@ -1,12 +1,18 @@
 <script id="tpl-resque" type="text/template">
 </script>
 
-<script id="tpl-queues-statistics" type="text/template">
+<script id="tpl-workers-statistics" type="text/template">
     <ul>
-
+        {@each workers as worker}
+        <li>
+            Name: <span class="badge">${worker.name}</span>
+            | Failed: <span class="badge">${worker.failed}</span>
+            | Processed: <span class="badge">${worker.processed}</span>
+            | Stared: <span class="badge">${worker.stared}</span>
+        </li>
+        {@/each}
     </ul>
 </script>
-
 
 <script id="tpl-jobs-statistics" type="text/template">
     <ul>

@@ -114,18 +114,32 @@ class ResponseService extends BaseService
     /**
      * @param null $params
      */
-    public function queuesStatistics($params = null)
+    public function workersStatistics($params = null)
     {
-        $redis       = $this->getRedis();
+        $redis = $this->getRedis();
+
         $queues      = [];
         $queue_names = $redis->sMembers('resque:queues');
         foreach ($queue_names as $queue_name) {
             $queues[] = [
-                'name' => $queue_name,
+                'name'   => $queue_name,
+                'length' => $redis->lLen('resque:queue:' . $queue_name),
+            ];
+        }
+
+        $workers      = [];
+        $worker_names = $redis->sMembers('resque:workers');
+        foreach ($worker_names as $worker_name) {
+            $workers[] = [
+                'name'      => $worker_name,
+                'stared'    => $redis->get('resque:worker:' . $worker_name),
+                'failed'    => $redis->get('resque:stat:failed:' . $worker_name),
+                'processed' => $redis->get('resque:stat:processed:' . $worker_name),
             ];
         }
         $data = [
-            'queues' => $queues
+            'queues'  => $queues,
+            'workers' => $workers,
         ];
         $this->push(0, __FUNCTION__, $data);
     }

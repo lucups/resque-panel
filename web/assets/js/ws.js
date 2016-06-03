@@ -55,7 +55,7 @@ socket.onopen = function (event) {
     }));
 
     socket.send(JSON.stringify({
-        mtd: 'queuesStatistics'
+        mtd: 'workersStatistics'
     }));
 
     socket.onmessage = function (event) {
@@ -77,13 +77,13 @@ socket.onopen = function (event) {
                         ]
                     });
                     break;
-                case 'queuesStatistics':
-                    var js = 1;
+                case 'workersStatistics':
+                    console.info(resp.data);
                     $('#queue').html('<option value="">Select a queue</option>');
                     resp.data.queues.map(function (item) {
                         $('#queue').append('<option value="' + item.name + '">' + item.name + '</option>');
                     });
-                    $('#queues-statistics').html(juicer($('#tpl-queues-statistics').html(), resp.data));
+                    $('#workers-statistics').html(juicer($('#tpl-workers-statistics').html(), resp.data));
                     break;
                 case 'jobsStatistics':
                     $('#jobs-statistics').html(juicer($('#tpl-jobs-statistics').html(), resp.data));
