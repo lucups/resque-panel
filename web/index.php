@@ -28,12 +28,9 @@
         <ul class="nav navbar-nav">
             <li>
                 <a href="javascript:void(0)">
-                    <span id="btn-ws-status" class="glyphicon glyphicon-record"></span>
+                    <span id="btn-ws-status" style="color: darkred;" class="glyphicon glyphicon-record"></span>
                 </a>
             </li>
-            <!--<li><a href="javascript:void(0)" class="" id="btn-config">Configuration</a></li>-->
-            <!--<li class="active"><a href="javascript:void(0)" class="btn-lang" data-lang="en">English</a></li>-->
-            <!--<li><a href="javascript:void(0)" class="btn-lang" data-lang="cn">Simple Chinese</a></li>-->
         </ul>
     </div>
 </nav>
