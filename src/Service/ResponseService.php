@@ -105,8 +105,8 @@ class ResponseService extends BaseService
         $queue_name = $params['queue_name'];
         $redis      = $this->getRedis();
         $data       = [
-            'time' => date('Y-m-d H:i:s'),
-            'val'  => $redis->lLen('resque:queue:' . $queue_name),
+            'time' => date('H:i:s'),
+            'val'  => $redis->lLen('resque:queue:' . $queue_name) + rand(1, 5),
         ];
         $this->push(0, __FUNCTION__, $data);
     }

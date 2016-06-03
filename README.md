@@ -34,7 +34,7 @@ http://localhost:8080
 ![All](screenshots/ResquePanel-Full.gif)
 ![Failed Job Detail](screenshots/ResquePanel-FailedJobDetail.gif)
 
-### Powered by
+### Dependencies
 
 - [Swoole](http://www.swoole.com/)
 - [ECharts](http://echarts.baidu.com/)

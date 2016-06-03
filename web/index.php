@@ -186,7 +186,7 @@
     var timer;
     $('#btn-load-queue-status').click(function () {
         var _this = $(this);
-        _this.html('Woring...');
+        _this.html('Working...');
         _this.addClass('disabled');
         clearInterval(timer);
 
@@ -204,7 +204,7 @@
                     queue: $('#queue').val()
                 }
             }));
-        }, 3000);
+        }, 1000);
 
         $('#queue').change(function () {
             _this.html('Load');

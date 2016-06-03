@@ -7,8 +7,15 @@ var cs = $('#console');
 
 // init echarts
 var queues_status = echarts.init(document.getElementById('queues-status'));
-var date = [(new Date()).Format('YYYY-MM-dd HH:mm:ss')];
-var data = [0];
+var now = (new Date()).Format('HH:mm:ss');
+var date = [];
+var data = [];
+var init_js = 0;
+while (init_js < 20) {
+    init_js++;
+    date.push('');
+    data.push(0);
+}
 
 queues_status.setOption({
     xAxis: {
@@ -25,7 +32,6 @@ queues_status.setOption({
             name: 'Pending Jobs',
             type: 'line',
             smooth: true,
-            symbol: 'none',
             stack: 'a',
             areaStyle: {
                 normal: {}
@@ -38,6 +44,7 @@ queues_status.setOption({
 function update_data(resp_data, limit) {
     date.push(resp_data.time);
     data.push(resp_data.val);
+    console.info(date.length);
     if (limit && date.length > limit) {
         date.shift();
         data.shift();
@@ -69,12 +76,10 @@ socket.onopen = function (event) {
                         xAxis: {
                             data: date
                         },
-                        series: [
-                            {
-                                name: 'Pending Jobs',
-                                data: data
-                            }
-                        ]
+                        series: [{
+                            name: 'Pending Jobs',
+                            data: data
+                        }]
                     });
                     break;
                 case 'workersStatistics':
