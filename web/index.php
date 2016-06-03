@@ -102,13 +102,13 @@
                         <a href="javascript:void(0);" id="btn-load-failed-jobs" class="btn btn-primary">Load</a>
                     </form>
 
-                    <table class="table table-bordered" style="margin-top: 1em;">
+                    <table class="table table-bordered table-responsive table-condensed table-hover" style="margin-top: 1em;">
                         <thead>
                         <tr>
-                            <th width="30%">FailedAt/Worker</th>
-                            <th width="20%">Exception</th>
+                            <th style="width: 200px;">FailedAt/Worker</th>
+                            <th>Exception</th>
                             <th>Error</th>
-                            <th width="10%">Operation</th>
+                            <th style="width: 80px;">Operation</th>
                         </tr>
                         </thead>
                         <tbody id="list-failed-jobs">

@@ -24,10 +24,10 @@
 <script id="tpl-failed-jobs" type="text/template">
     {@each failed_jobs as job}
     <tr>
-        <td>${job.failed_at}<br>${job.worker}</td>
+        <td style="width: 240px;">${job.failed_at}<br>${job.worker}</td>
         <td>${job.exception}</td>
         <td>${job.error}</td>
-        <td>
+        <td style="width: 80px;" class="text-center">
             <button class="btn btn-xs btn-info btn-failed-job-detail" data-raw="${job.raw_data}">Detail</button>
         </td>
     </tr>
