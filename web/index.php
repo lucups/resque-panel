@@ -107,7 +107,7 @@
                         <tr>
                             <th width="30%">FailedAt/Worker</th>
                             <th width="20%">Exception</th>
-                            <th width="40%">Error</th>
+                            <th>Error</th>
                             <th width="10%">Operation</th>
                         </tr>
                         </thead>
