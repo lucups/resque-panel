@@ -31,8 +31,8 @@ http://localhost:8080
 
 ### ScreenShots
 
-![All](screenshots/ResquePanel-ScreenShot03.gif)
-![Failed Job Detail](screenshots/ResquePanel-ScreenShot02.gif)
+![All](screenshots/ResquePanel-Full.gif)
+![Failed Job Detail](screenshots/ResquePanel-FailedJobDetail.gif)
 
 ### Powered by
 
@@ -45,6 +45,8 @@ http://localhost:8080
 
 ### TODO List
 
+- Unit Test;
+- History Data;
 - Refactor js WebSocket Client, make it robust;
 - More configuration parameters;
 - Refactor service layer;

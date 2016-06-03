@@ -32,8 +32,8 @@ http://localhost:8080
 
 ### 截图
 
-![All](screenshots/ResquePanel-ScreenShot03.gif)
-![Failed Job Detail](screenshots/ResquePanel-ScreenShot02.gif)
+![All](screenshots/ResquePanel-Full.gif)
+![Failed Job Detail](screenshots/ResquePanel-FailedJobDetail.gif)
 
 ### 主要依赖的项目
 
