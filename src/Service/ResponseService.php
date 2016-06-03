@@ -83,6 +83,8 @@ class ResponseService extends BaseService
         $failed_jobs_size = $redis->lLen('resque:failed');
         if ($sort == self::SORT_BY_TIME_DESC) {
             $failed_jobs = $redis->lRange('resque:failed', -$offset - $limit, -$offset - 1);
+            krsort($failed_jobs);
+            $failed_jobs = array_values($failed_jobs);
         } else {
             $failed_jobs = $redis->lRange('resque:failed', $offset, $offset + $limit - 1);
         }
