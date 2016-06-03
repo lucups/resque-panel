@@ -105,10 +105,10 @@
                     <table class="table table-bordered" style="margin-top: 1em;">
                         <thead>
                         <tr>
-                            <th>FailedAt/Worker</th>
-                            <th>Exception</th>
-                            <th>Error</th>
-                            <th>Operation</th>
+                            <th width="30%">FailedAt/Worker</th>
+                            <th width="20%">Exception</th>
+                            <th width="40%">Error</th>
+                            <th width="10%">Operation</th>
                         </tr>
                         </thead>
                         <tbody id="list-failed-jobs">
