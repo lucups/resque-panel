@@ -78,11 +78,24 @@ class ResponseService extends BaseService
         if (!empty($params['sort'])) {
             $sort = (int)$params['sort'];
         }
+
+        $redis            = $this->getRedis();
+        $failed_jobs_size = $redis->lLen('resque:failed');
         if ($sort == self::SORT_BY_TIME_DESC) {
-            $failed_jobs = $this->getRedis()->sort('resque:failed', ['sort' => 'desc', 'limit' => [1, 1], 'get' => '*']);
+            // why this not work ?
+            // $failed_jobs = $this->getRedis()->sort('resque:failed', ['sort' => 'desc', 'limit' => [1, 3]]);
+
+            // change offset/limit
+            $offset = $failed_jobs_size - $offset;
+            if ($offset < 0) {
+                $offset = 0;
+            }
+            $failed_jobs = $redis->lRange('resque:failed', $offset, -$limit);
+
+            // $failed_jobs = $this->getRedis()->sort('resque:failed', ['sort' => 'desc', 'limit' => [1, 3]]);
             print_r('====== ' . $failed_jobs . ' =====');
         } else {
-            $failed_jobs = $this->getRedis()->lRange('resque:failed', $offset, $offset + $limit - 1);
+            $failed_jobs = $redis->lRange('resque:failed', $offset, $offset + $limit - 1);
         }
 
         $decoded_failed_jobs = [];
@@ -91,7 +104,7 @@ class ResponseService extends BaseService
             $decoded_failed_job['raw_data'] = $failed_job;
             $decoded_failed_jobs[]          = $decoded_failed_job;
         }
-        $this->push(0, __FUNCTION__, ['failed_jobs' => $decoded_failed_jobs]);
+        $this->push(0, __FUNCTION__, ['failed_jobs' => $decoded_failed_jobs, 'failed_jobs_size' => $failed_jobs_size]);
     }
 
     /**
@@ -100,20 +113,11 @@ class ResponseService extends BaseService
      */
     public function queuesStatus($params = null)
     {
-        $redis = $this->getRedis();
-
-//        $queues      = [];
-//        $queue_names = $redis->sMembers('resque:queues');
-//        foreach ($queue_names as $queue_name) {
-//            $queues[] = [
-//                'name'   => $queue_name,
-//                'length' => $redis->lLen('resque:queue:' . $queue_name),
-//            ];
-//        }
-
-        $data = [
+        $queue_name = $params['queue_name'];
+        $redis      = $this->getRedis();
+        $data       = [
             'time' => date('Y-m-d H:i:s'),
-            'val'  => $redis->lLen('resque:queue:v3'),
+            'val'  => $redis->lLen('resque:queue:' . $queue_name),
         ];
         $this->push(0, __FUNCTION__, $data);
     }
@@ -131,14 +135,16 @@ class ResponseService extends BaseService
                 'name' => $queue_name,
             ];
         }
-        $data = [];
+        $data = [
+            'queues' => $queues
+        ];
         $this->push(0, __FUNCTION__, $data);
     }
 
     /**
      * @param null $params
      */
-    public function jobStatistics($params = null)
+    public function jobsStatistics($params = null)
     {
         $redis = $this->getRedis();
         $data  = [

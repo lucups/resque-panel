@@ -51,17 +51,12 @@ socket.onopen = function (event) {
     $('#btn-ws-status').css('color', 'green');
 
     socket.send(JSON.stringify({
-        mtd: 'jobStatistics'
+        mtd: 'jobsStatistics'
     }));
+
     socket.send(JSON.stringify({
         mtd: 'queuesStatistics'
     }));
-
-    setInterval(function () {
-        socket.send(JSON.stringify({
-            mtd: 'queuesStatus'
-        }));
-    }, 3000);
 
     socket.onmessage = function (event) {
         log('Client received a message');
@@ -74,20 +69,35 @@ socket.onopen = function (event) {
                         xAxis: {
                             data: date
                         },
-                        series: [{
-                            name: 'Pending Jobs',
-                            data: data
-                        }]
+                        series: [
+                            {
+                                name: 'Pending Jobs',
+                                data: data
+                            }
+                        ]
                     });
                     break;
                 case 'queuesStatistics':
+                    var js = 1;
+                    resp.data.queues.map(function (item) {
+                        var slt_html = '';
+                        if (js == 1) {
+                            slt_html += '<option value="' + item.name + '" selected="selected">' + item.name + '</option>';
+                            $('#queue').html(slt_html);
+                        } else {
+                            slt_html += '<option value="' + item.name + '">' + item.name + '</option>';
+                            $('#queue').append(slt_html);
+                        }
+                        js++;
+                    });
                     $('#queues-statistics').html(juicer($('#tpl-queues-statistics').html(), resp.data));
                     break;
-                case 'jobStatistics':
-                    $('#job-statistics').html(juicer($('#tpl-job-statistics').html(), resp.data));
+                case 'jobsStatistics':
+                    $('#jobs-statistics').html(juicer($('#tpl-jobs-statistics').html(), resp.data));
                     break;
                 case 'failedJobs':
                     console.info(resp.data);
+                    $('#failed-jobs-size').html(resp.data.failed_jobs_size);
                     $('#list-failed-jobs').html(juicer($('#tpl-failed-jobs').html(), resp.data));
                     break;
                 case 'output':

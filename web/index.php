@@ -44,9 +44,9 @@
         <div class="col-md-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Job Statistics</h3>
+                    <h3 class="panel-title">Jobs Statistics</h3>
                 </div>
-                <div class="panel-body" id="job-statistics">
+                <div class="panel-body" id="jobs-statistics">
                 </div>
             </div>
         </div>
@@ -67,6 +67,14 @@
                     <h3 class="panel-title">Pending Jobs</h3>
                 </div>
                 <div class="panel-body">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <label class="sr-only" for="offset">Queue</label>
+                            <select name="sort" id="queue" class="form-control">
+                            </select>
+                        </div>
+                        <a href="javascript:void(0);" id="btn-load-queue-status" class="btn btn-primary">Load</a>
+                    </form>
                     <div id="queues-status" style="width: 100%; height: 200px"></div>
                 </div>
             </div>
@@ -75,7 +83,7 @@
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Failed Jobs</h3>
+                    <h3 class="panel-title">Failed Jobs Detail <span id="failed-jobs-size" class="badge"></span></h3>
                 </div>
                 <div class="panel-body">
                     <form class="form-inline">
@@ -119,7 +127,9 @@
                     <h3 class="panel-title">Console</h3>
                 </div>
                 <div class="panel-body">
-                    <button class="btn btn-xs btn-default">Clear</button>
+                    <button class="btn btn-xs btn-default" id="btn-clear-console">Clear</button>
+                    <button class="btn btn-xs btn-default" id="btn-reset-console">Reset Line Number</button>
+                    <button class="btn btn-xs btn-default" id="btn-log-level">Log Level</button>
                     <div id="console"></div>
                 </div>
             </div>
@@ -161,6 +171,43 @@
 
     $('#btn-about').click(function () {
         $('#modal-about').modal('show');
+    });
+
+    $('#btn-clear-console').click(function () {
+        cs.html('');
+    });
+
+    $('#btn-reset-console').click(function () {
+        line_index = 1;
+    });
+
+    var timer;
+    $('#btn-load-queue-status').click(function () {
+        var _this = $(this);
+        _this.html('Loading...');
+        _this.addClass('disabled');
+        clearInterval(timer);
+        timer = setInterval(function () {
+            socket.send(JSON.stringify({
+                mtd: 'queuesStatus',
+                params: {
+                    queue: $('#queue').val()
+                }
+            }));
+        }, 3000);
+        setTimeout(function () {
+            _this.html('Loading');
+            _this.removeClass('disabled');
+        }, 10000);
+    });
+
+    function msg(text) {
+        $('#modal-info-text').html(text);
+        $('#modal-info').modal('show');
+    }
+
+    $('#btn-log-level').click(function () {
+        msg('<p>Sorry, this is a todo feature...</p>');
     });
 
     $('#btn-load-failed-jobs').click(function () {
