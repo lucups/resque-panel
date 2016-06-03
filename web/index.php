@@ -178,12 +178,25 @@
         line_index = 1;
     });
 
+    $('#queue').change(function () {
+        $('#btn-load-queue-status').html('Load');
+        $('#btn-load-queue-status').removeClass('disabled');
+    });
+
     var timer;
     $('#btn-load-queue-status').click(function () {
         var _this = $(this);
-        _this.html('Loading...');
+        _this.html('Woring...');
         _this.addClass('disabled');
         clearInterval(timer);
+
+        if ($('#queue').val() == '') {
+            msg('Please select a queue!');
+            $('#btn-load-queue-status').html('Load');
+            $('#btn-load-queue-status').removeClass('disabled');
+            return;
+        }
+
         timer = setInterval(function () {
             socket.send(JSON.stringify({
                 mtd: 'queuesStatus',
@@ -192,10 +205,11 @@
                 }
             }));
         }, 3000);
-        setTimeout(function () {
-            _this.html('Loading');
+
+        $('#queue').change(function () {
+            _this.html('Load');
             _this.removeClass('disabled');
-        }, 10000);
+        });
     });
 
     function msg(text) {

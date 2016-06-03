@@ -79,25 +79,16 @@ socket.onopen = function (event) {
                     break;
                 case 'queuesStatistics':
                     var js = 1;
+                    $('#queue').html('<option value="">Select a queue</option>');
                     resp.data.queues.map(function (item) {
-                        var slt_html = '';
-                        if (js == 1) {
-                            slt_html += '<option value="' + item.name + '" selected="selected">' + item.name + '</option>';
-                            $('#queue').html(slt_html);
-                        } else {
-                            slt_html += '<option value="' + item.name + '">' + item.name + '</option>';
-                            $('#queue').append(slt_html);
-                        }
-                        js++;
+                        $('#queue').append('<option value="' + item.name + '">' + item.name + '</option>');
                     });
-                    console.info(resp.data);
                     $('#queues-statistics').html(juicer($('#tpl-queues-statistics').html(), resp.data));
                     break;
                 case 'jobsStatistics':
                     $('#jobs-statistics').html(juicer($('#tpl-jobs-statistics').html(), resp.data));
                     break;
                 case 'failedJobs':
-                    console.info(resp.data);
                     $('#failed-jobs-size').html(resp.data.failed_jobs_size);
                     $('#list-failed-jobs').html(juicer($('#tpl-failed-jobs').html(), resp.data));
                     break;
