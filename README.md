@@ -23,7 +23,7 @@ vim ./config/config.php
 nohup php server/resque_panel.php > /tmp/resque_panel.log &
 
 # 4. Start PHP web server (you can also use other web server, just like Nginx or Apache)
-php -S localhost:4000 -t web/
+php -S localhost:8080 -t web/
 
 # 5. Open your browser, and visit
 http://localhost:8080
