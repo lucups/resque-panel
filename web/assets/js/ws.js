@@ -90,6 +90,7 @@ socket.onopen = function (event) {
                         }
                         js++;
                     });
+                    console.info(resp.data);
                     $('#queues-statistics').html(juicer($('#tpl-queues-statistics').html(), resp.data));
                     break;
                 case 'jobsStatistics':

@@ -82,18 +82,7 @@ class ResponseService extends BaseService
         $redis            = $this->getRedis();
         $failed_jobs_size = $redis->lLen('resque:failed');
         if ($sort == self::SORT_BY_TIME_DESC) {
-            // why this not work ?
-            // $failed_jobs = $this->getRedis()->sort('resque:failed', ['sort' => 'desc', 'limit' => [1, 3]]);
-
-            // change offset/limit
-            $offset = $failed_jobs_size - $offset;
-            if ($offset < 0) {
-                $offset = 0;
-            }
-            $failed_jobs = $redis->lRange('resque:failed', $offset, -$limit);
-
-            // $failed_jobs = $this->getRedis()->sort('resque:failed', ['sort' => 'desc', 'limit' => [1, 3]]);
-            print_r('====== ' . $failed_jobs . ' =====');
+            $failed_jobs = $redis->lRange('resque:failed', -$offset - $limit, -$offset - 1);
         } else {
             $failed_jobs = $redis->lRange('resque:failed', $offset, $offset + $limit - 1);
         }
