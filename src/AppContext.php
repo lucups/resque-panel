@@ -1,21 +1,21 @@
 <?php
 /**
- * BaseService.php
+ * AppContext.php
  *
  * @author      Tony Lu <dev@tony.engineer>
- * @create      16/5/27 16:12
+ * @create      16/6/7 16:12
  * @license     http://www.opensource.org/licenses/mit-license.php
  */
 
-namespace ResquePanel\Service;
+namespace ResquePanel;
 
 use ResquePanel\Util\Config;
 
 /**
- * Class BaseService
- * @package ResquePanel\Service
+ * Trait AppContext
+ * @package ResquePanel
  */
-class BaseService
+trait AppContext
 {
     private $redis = null;
 
@@ -31,5 +31,11 @@ class BaseService
             $this->redis->connect($redis_conf['host'], $redis_conf['port']);
         }
         return $this->redis;
+    }
+
+    public function catchRedisException(\Exception $e)
+    {
+        // TODO log the exception, and do something for notif
+        $this->redis = null;
     }
 }

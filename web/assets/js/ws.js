@@ -58,11 +58,11 @@ socket.onopen = function (event) {
     $('#btn-ws-status').css('color', 'green');
 
     socket.send(JSON.stringify({
-        mtd: 'jobsStatistics'
+        action: 'jobsStatistics'
     }));
 
     socket.send(JSON.stringify({
-        mtd: 'workersStatistics'
+        action: 'workersStatistics'
     }));
 
     socket.onmessage = function (event) {

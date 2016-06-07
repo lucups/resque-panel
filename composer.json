@@ -29,6 +29,7 @@
         "brandonwamboldt/utilphp": "1.0.*",
         "maximebf/consolekit": ">=1.0.0",
         "chrisboulton/php-resque": "1.2.x",
-        "monolog/monolog": "~1.0"
+        "monolog/monolog": "~1.0",
+        "wrench/wrench": " 2.0.*"
     }
 }

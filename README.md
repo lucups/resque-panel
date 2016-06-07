@@ -5,6 +5,11 @@ ResquePanel - A simple php-resque web interface monitor.
 
 - [中文说明](README_CN.md)
 
+### The reason for the creation of the wheel
+
+If you have tried [ResqueBoard](https://github.com/wa0x6e/ResqueBoard), you will understand.
+If you just need a simple tool with a web interface to monitor php-resque, just try this one.
+
 ### Install & Configuration
 
 ```

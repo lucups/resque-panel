@@ -199,7 +199,7 @@
 
         timer = setInterval(function () {
             socket.send(JSON.stringify({
-                mtd: 'queuesStatus',
+                action: 'queuesStatus',
                 params: {
                     queue: $('#queue').val()
                 }
@@ -226,7 +226,7 @@
         var limit = $('#limit').val();
         var sort = $('#sort').val();
         socket.send(JSON.stringify({
-            mtd: 'failedJobs',
+            action: 'failedJobs',
             params: {
                 offset: offset,
                 limit: limit,

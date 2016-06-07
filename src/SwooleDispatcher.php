@@ -1,40 +1,88 @@
 <?php
 /**
- * QueueService.php
+ * SwooleDispatcher.php
  *
  * @author      Tony Lu <dev@tony.engineer>
- * @create      16/5/27 10:41
+ * @create      16/5/26 17:45
  * @license     http://www.opensource.org/licenses/mit-license.php
  */
 
-namespace ResquePanel\Service;
+namespace ResquePanel;
 
 /**
- * Class ResponseService
- * @package ResquePanel\Service
+ * Class SwooleDispatcher
+ * @package ResquePanel
  */
-class ResponseService extends BaseService
+class SwooleDispatcher
 {
     const SORT_BY_TIME_ASC  = 1; // 按时间正序排列
     const SORT_BY_TIME_DESC = 2; // 按时间倒序排列
 
     private $server = null;
     private $frame  = null;
+    private $config = null;
 
-    public function __construct($server, $frame)
+    /**
+     * @param $server
+     * @return $this
+     */
+    public function setServer($server)
     {
         $this->server = $server;
-        $this->frame  = $frame;
+        return $this;
     }
 
+    /**
+     * @param $frame
+     * @return $this
+     */
+    public function setFrame($frame)
+    {
+        $this->frame = $frame;
+        return $this;
+    }
+
+    /**
+     * @return null
+     */
     public function getServer()
     {
         return $this->server;
     }
 
+    /**
+     * @return null
+     */
     public function getFrame()
     {
         return $this->frame;
+    }
+
+    /**
+     * @param $config
+     * @return $this
+     */
+    public function setConfig($config)
+    {
+        $this->config = $config;
+        return $this;
+    }
+
+    /**
+     * handle
+     *      The default service is ResponseService.
+     */
+    public function handle()
+    {
+        $data = json_decode($this->frame->data, true);
+        if (method_exists($this, $data['action'])) {
+            if (empty($data['params'])) {
+                $data['params'] = null;
+            }
+            $this->$data['action']($data['params']);
+        } else {
+            throw new \Exception('Method is not exists!');
+        }
     }
 
     /**
