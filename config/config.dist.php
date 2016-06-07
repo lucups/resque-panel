@@ -8,12 +8,13 @@
  */
 
 return [
-    'debug' => true,
-    'ws'    => [
+    'debug'  => true,
+    'swoole' => false,
+    'ws'     => [
         'host' => 'localhost',
         'port' => 11011,
     ],
-    'redis' => [
+    'redis'  => [
         'host' => 'localhost',
         'port' => 6379,
         'pass' => null,

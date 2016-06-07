@@ -68,6 +68,9 @@ socket.onopen = function (event) {
     socket.onmessage = function (event) {
         log('Client received a message');
         var resp = JSON.parse(event.data);
+        if (DEBUG) {
+            console.info(resp);
+        }
         if (resp.action) {
             switch (resp.action) {
                 case 'queuesStatus':

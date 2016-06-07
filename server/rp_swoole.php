@@ -1,6 +1,6 @@
 <?php
 /**
- * resque_panel_by_swoole.php
+ * rp_swoole.php
  *
  */
 define('APP_PATH', __DIR__ . '/../');
@@ -27,7 +27,7 @@ try {
 
     // init server
     $server     = new \swoole_websocket_server($config['ws']['host'], $config['ws']['port']);
-    $dispatcher = new \ResquePanel\SwooleDispatcher();
+    $dispatcher = new \ResquePanel\Server\SwooleDispatcher();
 
     $server->on('Open', function ($server, $req) use ($dispatcher, $config) {
         echo "connection open: " . $req->fd;

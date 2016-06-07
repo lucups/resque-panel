@@ -1,6 +1,6 @@
 <?php
 /**
- * resque_panel_recorder.php
+ * rp_recorder.php
  */
 
 define('APP_PATH', __DIR__ . '/../');

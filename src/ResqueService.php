@@ -1,104 +1,24 @@
 <?php
 /**
- * SwooleDispatcher.php
+ * AppService.php
  *
  * @author      Tony Lu <dev@tony.engineer>
- * @create      16/5/26 17:45
+ * @create      16/6/7 11:59
  * @license     http://www.opensource.org/licenses/mit-license.php
  */
 
 namespace ResquePanel;
 
 /**
- * Class SwooleDispatcher
+ * Class ResqueService
  * @package ResquePanel
  */
-class SwooleDispatcher
+class ResqueService
 {
+    use AppContext;
+
     const SORT_BY_TIME_ASC  = 1; // 按时间正序排列
     const SORT_BY_TIME_DESC = 2; // 按时间倒序排列
-
-    private $server = null;
-    private $frame  = null;
-    private $config = null;
-
-    /**
-     * @param $server
-     * @return $this
-     */
-    public function setServer($server)
-    {
-        $this->server = $server;
-        return $this;
-    }
-
-    /**
-     * @param $frame
-     * @return $this
-     */
-    public function setFrame($frame)
-    {
-        $this->frame = $frame;
-        return $this;
-    }
-
-    /**
-     * @return null
-     */
-    public function getServer()
-    {
-        return $this->server;
-    }
-
-    /**
-     * @return null
-     */
-    public function getFrame()
-    {
-        return $this->frame;
-    }
-
-    /**
-     * @param $config
-     * @return $this
-     */
-    public function setConfig($config)
-    {
-        $this->config = $config;
-        return $this;
-    }
-
-    /**
-     * handle
-     *      The default service is ResponseService.
-     */
-    public function handle()
-    {
-        $data = json_decode($this->frame->data, true);
-        if (method_exists($this, $data['action'])) {
-            if (empty($data['params'])) {
-                $data['params'] = null;
-            }
-            $this->$data['action']($data['params']);
-        } else {
-            throw new \Exception('Method is not exists!');
-        }
-    }
-
-    /**
-     * @param $code
-     * @param $action
-     * @param $data
-     */
-    public function push($code, $action, $data)
-    {
-        $resp = [
-            'code'   => $code,
-            'action' => $action,
-            'data'   => $data,
-        ];
-        $this->getServer()->push($this->getFrame()->fd, json_encode($resp));
-    }
 
     /**
      * @param null $params
@@ -111,6 +31,7 @@ class SwooleDispatcher
 
     /**
      * @param null $params
+     * @return array
      */
     public function failedJobs($params = null)
     {
@@ -143,26 +64,34 @@ class SwooleDispatcher
             $decoded_failed_job['raw_data'] = $failed_job;
             $decoded_failed_jobs[]          = $decoded_failed_job;
         }
-        $this->push(0, __FUNCTION__, ['failed_jobs' => $decoded_failed_jobs, 'failed_jobs_size' => $failed_jobs_size]);
+
+        return ['failed_jobs' => $decoded_failed_jobs, 'failed_jobs_size' => $failed_jobs_size];
     }
 
     /**
-     * Return the data by timestamp (default is now).
      * @param null $params
+     * @return array
      */
     public function queuesStatus($params = null)
     {
-        $queue_name = $params['queue_name'];
-        $redis      = $this->getRedis();
-        $data       = [
-            'time' => date('H:i:s'),
-            'val'  => $redis->lLen('resque:queue:' . $queue_name),
-        ];
-        $this->push(0, __FUNCTION__, $data);
+        if (!empty($params['queue_name'])) {
+            $queue_name = $params['queue_name'];
+            $redis      = $this->getRedis();
+            return [
+                'time' => date('H:i:s'),
+                'val'  => $redis->lLen('resque:queue:' . $queue_name),
+            ];
+        } else {
+            return [
+                'time' => date('H:i:s'),
+                'val'  => 0,
+            ];
+        }
     }
 
     /**
      * @param null $params
+     * @return array
      */
     public function workersStatistics($params = null)
     {
@@ -187,28 +116,23 @@ class SwooleDispatcher
                 'processed' => $redis->get('resque:stat:processed:' . $worker_name),
             ];
         }
-        $data = [
+        return [
             'queues'  => $queues,
             'workers' => $workers,
         ];
-        $this->push(0, __FUNCTION__, $data);
     }
 
-    /**
-     * @param null $params
-     */
     public function jobsStatistics($params = null)
     {
         $redis = $this->getRedis();
-        $data  = [
+        return [
             'processed_jobs' => $redis->get('resque:stat:processed'),
             'failed_jobs'    => $redis->get('resque:stat:failed'),
         ];
-        $this->push(0, __FUNCTION__, $data);
     }
 
     public function history()
     {
-
+        return [];
     }
 }

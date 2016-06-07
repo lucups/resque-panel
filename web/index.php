@@ -139,8 +139,17 @@
 <?php include __DIR__ . '/inc/modals.html'; ?>
 <?php include __DIR__ . '/inc/templates.html'; ?>
 
+<?php
+$ws_url = 'ws://' . $config['ws']['host'] . ':' . $config['ws']['port'];
+if (empty($config['swoole'])) {
+    $ws_url .= '/panel';
+}
+?>
+
 <script type="text/javascript">
-    var WS_URL = 'ws://<?php echo $config['ws']['host']; ?>:<?php echo $config['ws']['port']; ?>';
+    var DEBUG = <?php echo $config['debug'] ? 'true' : 'false'; ?>;
+    var WS_URL = ' <?php echo $ws_url; ?>';
+    console.info(WS_URL);
 </script>
 
 <script src="/libs/jquery/jquery-1.11.3.min.js"></script>
