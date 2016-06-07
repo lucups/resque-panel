@@ -21,7 +21,7 @@ cp ./config/config.dist.php ./config/config.php
 vim ./config/config.php
 
 # 3. 启动 WebSocket
-nohup php server/resque_panel.php > /tmp/resque_panel.log &
+nohup php server/rp_server.php > /tmp/resque_panel.log &
 
 # 4. 启动 HTTP 服务器
 php -S localhost:8080 -t web/
@@ -37,7 +37,7 @@ http://localhost:8080
 
 ### 主要依赖的项目
 
-- [Swoole](http://www.swoole.com/)
+- [Wrench](https://github.com/varspool/Wrench) OR [Swoole](http://www.swoole.com/)
 - [ECharts](http://echarts.baidu.com/)
 - [jsoneditor](https://github.com/josdejong/jsoneditor)
 - [jQuery](http://jquery.com/)

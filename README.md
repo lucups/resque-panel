@@ -25,7 +25,7 @@ cp ./config/config.dist.php ./config/config.php
 vim ./config/config.php
 
 # 3. Start WebSocket server by `nohup` command
-nohup php server/resque_panel.php > /tmp/resque_panel.log &
+nohup php server/rp_server.php > /tmp/resque_panel.log &
 
 # 4. Start PHP web server (you can also use other web server, just like Nginx or Apache)
 php -S localhost:8080 -t web/
@@ -41,7 +41,7 @@ http://localhost:8080
 
 ### Dependencies
 
-- [Swoole](http://www.swoole.com/)
+- [Wrench](https://github.com/varspool/Wrench) OR [Swoole](http://www.swoole.com/)
 - [ECharts](http://echarts.baidu.com/)
 - [jsoneditor](https://github.com/josdejong/jsoneditor)
 - [jQuery](http://jquery.com/)
