@@ -1,6 +1,9 @@
 ResquePanel - A simple php-resque web interface monitor.
 ============================================================
 
+Sorry, ResquePanel is no longer maintained.
+===========================================
+
 [![Build Status](https://travis-ci.org/Lucups/resque-panel.svg?branch=master)](https://travis-ci.org/Lucups/resque-panel)
 
 - [中文说明](README_CN.md)
